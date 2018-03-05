@@ -8,8 +8,8 @@ const article_type = process.argv[2];
 const article_path_sub_folder = process.argv[3];
 const mdParam = "D:/workplace/git/Doc/educate/" + article_type + "/" + article_path_sub_folder;
 
-const css_bootstrap = "D:/workplace/git/Doc/dashidan.com/css/bootstrap.css";
-const css_dashidan = "D:/workplace/git/Doc/dashidan.com/css/dashidan.css";
+const css_bootstrap = "D:/workplace/git/amp.dsd/css/bootstrap.css";
+const css_dashidan = "D:/workplace/git/amp.dsd/css/dashidan.css";
 
 /** 默认转化pc页面*/
 let convertType = "pc";
@@ -17,7 +17,7 @@ if (process.argv.length >= 4) {
     /** 转化类型 可选[mip, amp]*/
     convertType = process.argv[4];
 
-    if(convertType != "mip") {
+    if(convertType != "mip" && convertType != "amp") {
         console.log('error 参数错误 convertType:' + convertType);
         return;
     }
@@ -30,6 +30,8 @@ let article_index;
 if (convertType == "mip") {
     /** mip 格式文件目录*/
     htmlParam = "D:/workplace/git/mip.dsd/article/" + article_type + "/" + article_path_sub_folder;
+} else if(convertType == "amp") {
+    htmlParam = "D:/workplace/git/amp.dsd/article/" + article_type + "/" + article_path_sub_folder;
 } else {
     /** pc默认格式文件目录*/
     htmlParam = "D:/workplace/git/Doc/dashidan.com/article/" + article_type + "/" + article_path_sub_folder;
@@ -155,6 +157,11 @@ function convertFile(mdFile, outHtmlFile, fileName) {
         if (convertType == "mip") {
             /** mip读取template_article_mip.hbs*/
             mustache_data = fs.readFileSync("template_article_mip.hbs", 'utf-8');
+            article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
+            article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
+        } else if(convertType == "amp") {
+            /** amp*/
+            mustache_data = fs.readFileSync("template_article_amp.hbs", 'utf-8');
             article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
             article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
         } else {
