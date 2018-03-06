@@ -13,7 +13,7 @@ const css_dashidan = "D:/workplace/git/amp.dsd/css/dashidan.css";
 
 /** 默认转化pc页面*/
 let convertType = "pc";
-if (process.argv.length >= 4) {
+if (process.argv.length > 4) {
     /** 转化类型 可选[mip, amp]*/
     convertType = process.argv[4];
 
