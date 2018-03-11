@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require("path");
 const showdown = require('sinbad_showdown');
 const Handlebars = require("handlebars");
+var moment = require('moment');
 
 const article_type = process.argv[2];
 const article_path_sub_folder = process.argv[3];
@@ -171,6 +172,9 @@ function convertFile(mdFile, outHtmlFile, fileName) {
             let index_data = fs.readFileSync(article_index, 'utf-8');
             article_config.index_data = index_data;
         }
+
+        article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss'); /*格式化时间*/
+        // article_config.date_published = new Date().Format("yyyy-MM-ddTHH:mm:ss\"));
         /** 转化为html数据*/
         const compiled = Handlebars.compile(mustache_data);
         let firstHtmlData = compiled(article_config);

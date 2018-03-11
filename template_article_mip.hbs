@@ -12,6 +12,28 @@
         {{{css_bootstrap}}}
         {{{css_dashidan}}}
     </style>
+
+    <noscript>
+        <style mip-officialrelease>
+            body {
+                -webkit-animation: none;
+                -moz-animation: none;
+                -ms-animation: none;
+                animation: none;
+            }
+        </style>
+    </noscript>
+
+    <script  type="application/ld+json"> {
+       "@context": "https://zhanzhang.baidu.com/contexts/cambrian.jsonld",
+       "@id": "https://mip.dashidan.com/article/{{article_type}}/{{sub_folder}}/{{fileNum}}.html",
+       "title":"{{description.title}}",
+       "description": "{{description.desc}}",
+       "pubDate": "{{date_published}}",
+       "isOriginal": "1"
+}</script>
+
+    <script src="https://c.mipcdn.com/extensions/platform/v1/mip-cambrian/mip-cambrian.js"></script>
 </head>
 
 <body>
@@ -20,6 +42,8 @@
         <a class="navbar-brand" href="http://mip.localhost/index.html">大屎蛋教程网</a>
     </div>
 </nav>
+
+<mip-cambrian site-id="1588397041009826"></mip-cambrian>
 
 <div class="container-fluid">
     <!-- 顶部面包屑导航-->
@@ -49,8 +73,7 @@
     </div>
 </footer>
 
-<!--百度统计组件，外链mip-stats-baidu.js TODO: 修改token值-->
-<!--<p class="middle-text">mip-stats-baidu 百度统计组件，代码可见</p>-->
+<!--百度统计组件，外链mip-stats-baidu.js -->
 <mip-stats-baidu token="6632e058970afc4f6d1475330c7682cd"></mip-stats-baidu>
 <!--mip 运行环境-->
 <script src="https://c.mipcdn.com/static/v1/mip.js"></script>
