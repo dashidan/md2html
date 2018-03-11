@@ -1,0 +1,10 @@
+start pc_git
+start pc_html
+start pc_java
+start pc_linux
+start pc_mongodb
+start pc_nodejs
+start pc_php
+start pc_redis
+start pc_webserver
+start pc_windows

@@ -1,0 +1,10 @@
+start mip_git
+start mip_html
+start mip_java
+start mip_linux
+start mip_mongodb
+start mip_nodejs
+start mip_php
+start mip_redis
+start mip_webserver
+start mip_windows

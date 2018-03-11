@@ -1,0 +1,10 @@
+start amp_git
+start amp_html
+start amp_java
+start amp_linux
+start amp_mongodb
+start amp_nodejs
+start amp_php
+start amp_redis
+start amp_webserver
+start amp_windows
