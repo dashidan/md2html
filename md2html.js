@@ -1,13 +1,13 @@
 "use strict";
 const fs = require('fs');
-const path = require("path");
 const showdown = require('sinbad_showdown');
 const Handlebars = require("handlebars");
-var moment = require('moment');
+const moment = require('moment');
 
 const article_type = process.argv[2];
 const article_path_sub_folder = process.argv[3];
-const mdParam = "D:/workplace/git/Doc/educate/" + article_type + "/" + article_path_sub_folder;
+const article_base_folder = "D:/workplace/git/Doc/educate/";
+const article_folder = article_base_folder + article_type;
 
 const css_bootstrap = "D:/workplace/git/amp.dsd/css/bootstrap.css";
 const css_dashidan = "D:/workplace/git/amp.dsd/css/dashidan.css";
@@ -17,107 +17,135 @@ let convertType = "pc";
 if (process.argv.length > 4) {
     /** 转化类型 可选[mip, amp]*/
     convertType = process.argv[4];
-
-    if(convertType != "mip" && convertType != "amp") {
+    if (convertType != "mip" && convertType != "amp") {
         console.log('error 参数错误 convertType:' + convertType);
         return;
     }
 }
 
 /** 生成的html文件目录*/
-let htmlParam;
-/** 文章目录索引*/
-let article_index;
+let htmlOutBaseFolder;
 if (convertType == "mip") {
     /** mip 格式文件目录*/
-    htmlParam = "D:/workplace/git/mip.dsd/article/" + article_type + "/" + article_path_sub_folder;
-} else if(convertType == "amp") {
-    htmlParam = "D:/workplace/git/amp.dsd/article/" + article_type + "/" + article_path_sub_folder;
+    htmlOutBaseFolder = "D:/workplace/git/mip.dsd/article/";
+} else if (convertType == "amp") {
+    htmlOutBaseFolder = "D:/workplace/git/amp.dsd/article/";
 } else {
     /** pc默认格式文件目录*/
-    htmlParam = "D:/workplace/git/Doc/dashidan.com/article/" + article_type + "/" + article_path_sub_folder;
-    article_index = "D:/workplace/git/Doc/dashidan.com/index_template/" + article_type + ".html";
+    htmlOutBaseFolder = "D:/workplace/git/Doc/dashidan.com/article/";
 }
 
-var allFileName = [];
-getAllFolderFileName(mdParam);
+/**
+ *
+ * allFileName数据格式
+ *
+ * {
+ *  {
+ *      "sub_folder":"basic",
+ *      "category":"Javar入门到精通"，
+ *      "article": [
+ *          {
+ *              "md":xxxxx/1.md,
+ *              "fileNum":1,
+ *              "fileName": Java教程简介
+ *          }
+ *      ]
+ *  }
+ * }
+ * @type {Array}
+ */
+let allFileName = [];
+getAllFolderFileName(article_folder);
 
-function getAllFolderFileName(folderName) {
-    console.log("readFolder folderName : " + folderName);
-    fs.readdir(folderName, function (err, files) {
-        if (err) {
-            console.log('error:\n' + err);
-            return;
-        }
-        files.forEach(function (file) {
-            if (file.endsWith('.md')) {
-                allFileName.push(file);
+function getAllFolderFileName(folderName, sub_folder) {
+    console.log("readFolder folderName : " + folderName + " sub_folder: " + sub_folder);
+    let files = fs.readdirSync(folderName);
+    files.forEach(function (file) {
+        let sub_file = folderName + '/' + file;
+        let stat = fs.statSync(sub_file);
+        if (stat.isDirectory()) {
+            getAllFolderFileName(sub_file, file);
+        } else {
+            if (sub_file.endsWith('.md')) {
+                let fileNumber = getFileNumber(file);
+                if (fileNumber) {
+                    /** 只获取已经添加数字的文件,这个数字是从1开始的*/
+                    console.log(" sub_folder: " + sub_folder + " fileNumber: " + fileNumber + " sub_file: " + sub_file);
+                    let contain = false;
+                    for (let index in allFileName) {
+                        if (allFileName[index].sub_folder === sub_folder) {
+
+                            let articleInfo = {};
+                            articleInfo.md = sub_file;
+                            articleInfo.fileNum = fileNumber;
+                            articleInfo.fileName = file.replace(".md", "");
+
+                            allFileName[index]["article"][fileNumber] = articleInfo;
+                            contain = true;
+                        }
+                    }
+                    if (!contain) {
+                        let cateGoryInfo = require(folderName + "/title.json");
+                        let info = {};
+                        info.sub_folder = sub_folder;
+                        info.category = cateGoryInfo.title;
+                        info.article = [];
+
+                        let articleInfo = {};
+                        articleInfo.md = sub_file;
+                        articleInfo.fileNum = fileNumber;
+                        articleInfo.fileName = file.replace(".md", "");
+
+                        info.article[fileNumber] = articleInfo;
+                        let index = cateGoryInfo.index;
+                        if (allFileName[index]) {
+                            console.log("title.json 文件中的index冲突: " + cateGoryInfo + " allFileName[index] "
+                                        + allFileName[index]);
+                        }
+                        allFileName[index] = info;
+                    }
+                }
             }
-        });
+        }
     });
 }
 
 console.log("allFileName: " + allFileName);
 
-readFolder(mdParam);
+readFolder(article_path_sub_folder);
 
 /**
  * 读取目录中的MD文件
  * @param folderName
  */
-function readFolder(folderName) {
-    console.log("readFolder folderName : " + folderName);
-    fs.readdir(folderName, function (err, files) {
-        if (err) {
-            console.log('error:\n' + err);
-            return;
-        }
-        files.forEach(function (file) {
-            fs.stat(folderName + '/' + file, function (err, stat) {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                if (stat.isDirectory()) {
-                    console.log("isDirectory stat : " + stat);
-                    readFolder(folderName + '/' + file);
-                } else {
-                    if (file.endsWith('.md')) {
-                        let mdFile = folderName + '/' + file;
-                        let outFileName = null;
-                        if (folderName === mdParam) {
-                            /** 输出文件名去掉"1.", 只用"."后边的文件名, 这样调整顺序时, 不影响文章的索引*/
-                            const fileNumber = getFileNumber(file);
-                            if (fileNumber) {
-                                outFileName = htmlParam + '/' + fileNumber + '.html';
-                            }
-                        } else {
-                            let subFulder = folderName.replace(mdParam + "/", '');
-                            let outFolder = htmlParam + '/' + subFulder;
-                            let exist = fs.existsSync(outFolder);
-                            if (!exist) {
-                                console.log('not exist make dir outFolder :' + outFolder);
-                                fs.mkdirSync(outFolder);
-                            }
+function readFolder() {
+    console.log("readFolder folderName : " + article_path_sub_folder);
+    for (let index in allFileName) {
+        if (allFileName[index]["sub_folder"] == article_path_sub_folder) {
 
-                            /** 输出文件名去掉"1.", 只用"."后边的文件名, 这样调整顺序时, 不影响文章的索引*/
-                            const fileNumber = getFileNumber(file);
-                            if (fileNumber) {
-                                outFileName = htmlParam + '/' + fileNumber + '.html';
-                            }
-                        }
-                        folderName.trim();
-                        if (outFileName) {
-                            console.log('mdFile:' + mdFile + ' outFileName :' + outFileName);
-                            convertFile(mdFile, outFileName, file);
-                        } else {
-                            console.warn('文件名不合法, 忽略文件 file ' + file);
-                        }
-                    }
-                }
-            });
-        });
-    });
+            let outFolder = htmlOutBaseFolder + article_type + "/" + article_path_sub_folder;
+            let exist = fs.existsSync(htmlOutBaseFolder + article_type);
+            if (!exist) {
+                fs.mkdirSync(htmlOutBaseFolder + article_type);
+            }
+
+            exist = fs.existsSync(htmlOutBaseFolder + article_type + "/" + article_path_sub_folder);
+            if (!exist) {
+                fs.mkdirSync(htmlOutBaseFolder + article_type + "/" + article_path_sub_folder);
+            }
+
+            for (let i = 1; i < allFileName[index]["article"].length; i++) {
+                let outHtmlFileName = outFolder + "/" + i + ".html";
+                let fileNameArr = allFileName[index]["article"][i]["md"].split("/");
+                let fileName = fileNameArr[fileNameArr.length - 1];
+                convertFile(allFileName[index]["article"][i]["md"], outHtmlFileName, fileName);
+            }
+        }
+    }
+
+    let outHtmlFile = htmlOutBaseFolder + article_type + "/index.html";
+    let descFile = require(article_folder + "/desc.json");
+    convertIndex(outHtmlFile, descFile);
 }
 
 /**
@@ -129,12 +157,10 @@ function convertFile(mdFile, outHtmlFile, fileName) {
     const mdData = fs.readFileSync(mdFile, 'utf-8');
     let converter = new showdown.Converter({"convertType": convertType});
     let htmlData = converter.makeHtml(mdData);
-    let outFolder = path.dirname(outHtmlFile);
     let descriptionFileName = mdFile.replace('.md', '.json');
-    mkdirs(outFolder);
     /** 不转化index.md, 采用单独的模板, 这里只转化文章内容*/
     console.log("-------------------------------------------------------");
-    console.log("convertFile fileName " + fileName);
+    console.log("convertFile " + mdFile + " to: " + outHtmlFile);
     console.log("-------------------------------------------------------");
     const num = parseInt(fileName.split('.')[0]);
     /** 输出文件名去掉"1.", 只用"."后边的文件名, 这样调整顺序时, 不影响文章的索引*/
@@ -144,8 +170,8 @@ function convertFile(mdFile, outHtmlFile, fileName) {
         let article_config = {};
         article_config.title = fileShowName;
         article_config.content = htmlData;
-        article_config.last = getLast(num);
-        article_config.next = getNext(num);
+        article_config.last = getFileByNum(article_type, num - 1);
+        article_config.next = getFileByNum(article_type, num + 1);
         article_config.nextNum = num + 1;
         article_config.article_type = article_type;
         article_config.sub_folder = article_path_sub_folder;
@@ -160,7 +186,7 @@ function convertFile(mdFile, outHtmlFile, fileName) {
             mustache_data = fs.readFileSync("template_article_mip.hbs", 'utf-8');
             article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
             article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
-        } else if(convertType == "amp") {
+        } else if (convertType == "amp") {
             /** amp*/
             mustache_data = fs.readFileSync("template_article_amp.hbs", 'utf-8');
             article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
@@ -168,13 +194,11 @@ function convertFile(mdFile, outHtmlFile, fileName) {
         } else {
             /** 默认pc文件 读取template_article.hbs*/
             mustache_data = fs.readFileSync("template_article.hbs", 'utf-8');
-            /** 获取索引*/
-            let index_data = fs.readFileSync(article_index, 'utf-8');
-            article_config.index_data = index_data;
         }
-
-        article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss'); /*格式化时间*/
-        // article_config.date_published = new Date().Format("yyyy-MM-ddTHH:mm:ss\"));
+        /** 格式化时间*/
+        article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+        /** 指定目录全部文件名*/
+        article_config.all_file_name = allFileName;
         /** 转化为html数据*/
         const compiled = Handlebars.compile(mustache_data);
         let firstHtmlData = compiled(article_config);
@@ -187,19 +211,43 @@ function convertFile(mdFile, outHtmlFile, fileName) {
 }
 
 /**
- * 递归创建目录
- * @param dirPath 创建目录名
+ * 转化索引文件
  */
-function mkdirs(dirPath) {
-    if (!fs.existsSync(dirPath)) {
-        let dirName = path.dirname(dirPath);
-        let exist = fs.existsSync(dirName);
-        if (exist) {
-            fs.mkdirSync(dirPath);
-        } else {
-            mkdirs(dirName);
-        }
+function convertIndex(outHtmlFile, descFile) {
+    /** 只转化文章索引*/
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    console.log("convertIndex outHtmlFile " + outHtmlFile);
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    let article_config = {};
+    article_config.description = descFile;
+    article_config.article_type = article_type;
+    article_config.sub_folder = article_path_sub_folder;
+    /** 读取handlebars模板数据*/
+    let mustache_data;
+    if (convertType == "mip") {
+        /** mip读取template_article_mip.hbs*/
+        mustache_data = fs.readFileSync("template_index_mip.hbs", 'utf-8');
+        article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
+        article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
+    } else if (convertType == "amp") {
+        /** amp*/
+        mustache_data = fs.readFileSync("template_index_amp.hbs", 'utf-8');
+        article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
+        article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
+    } else {
+        /** 读取template_article.hbs*/
+        mustache_data = fs.readFileSync("template_index.hbs", 'utf-8');
     }
+    /** 格式化时间*/
+    article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+    /** 指定目录全部文件名*/
+    article_config.all_file_name = allFileName;
+    /** 转化为html数据*/
+    const compiled = Handlebars.compile(mustache_data);
+    let firstHtmlData = compiled(article_config);
+    /** 写入文件*/
+    fs.writeFileSync(outHtmlFile, firstHtmlData);
+    console.log("OK.");
 }
 
 /**
@@ -207,37 +255,11 @@ function mkdirs(dirPath) {
  * @param num
  * @return {*}
  */
-function getLast(num) {
-    const lastNum = num - 1;
-    const lastFileStart = lastNum + ".";
-
-    let i = 0, length = allFileName.length;
-    for (; i < length; i++) {
-        if (allFileName[i].startsWith(lastFileStart)) {
-            const fileShowName = removeFileNumberAndSuffix(allFileName[i]);
-            if (fileShowName) {
-                return fileShowName;
-            }
-        }
-    }
-    return null;
-}
-
-/**
- * 获取下一篇链接
- * @param num
- * @return {*}
- */
-function getNext(num) {
-    const nextNum = num + 1;
-    const nextFileStart = nextNum + ".";
-
-    let i = 0, length = allFileName.length;
-    for (; i < length; i++) {
-        if (allFileName[i].startsWith(nextFileStart)) {
-            const fileShowName = removeFileNumberAndSuffix(allFileName[i]);
-            if (fileShowName) {
-                return fileShowName;
+function getFileByNum(article_type, num) {
+    for (let index in allFileName) {
+        if (allFileName[index]["sub_folder"] == article_type) {
+            if (num >= 1 && num < allFileName[index]["article"].length) {
+                return removeFileNumberAndSuffix(allFileName[index]["article"][num]["md"]);
             }
         }
     }

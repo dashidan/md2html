@@ -55,19 +55,20 @@
 </nav>
 <div class="fullscreen">
     <div class="container-fluid">
-        <!-- 顶部面包屑导航-->
         <div>
             <a href="http://localhost/index.html">首页</a> > <a
-                href="http://localhost/article/{{article_type}}/index.html">{{article_type}}</a> > {{fileName}}
+                href="http://localhost/article/{{article_type}}/index.html">{{article_type}}</a>
         </div>
 
         <div class="dsd_content">
-            <div id="xs_index" class="col-sm-3 col-md-3 col-lg-3 col-xs-12 hidden-xs">
+            <div id="xs_index" class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
                 {{#each all_file_name}}
+                    <!-- 循环1-->
                     <div class="dsd_title" onclick="clickTitle('{{this.sub_folder}}')">
-                        <span id="{{this.sub_folder}}_title">+ {{this.category}}</span>
+                        <span id="{{this.sub_folder}}_title">- {{this.category}}</span>
                     </div>
-                    <div id="{{this.sub_folder}}" class="dsd_catalog_left_hide">
+                    <div id="{{this.sub_folder}}" class="dsd_catalog_left_show">
+                        <!-- 循环2-->
                         {{#each this.article}}
                             <div class="single_line">
                                 <a href="http://localhost/article/{{../../article_type}}/{{../this.sub_folder}}/{{this.fileNum}}.html">{{this.fileName}}</a>
@@ -76,30 +77,9 @@
                     </div>
                 {{/each}}
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9">
-                <!-- 文章内容-->
-                <article class="dsd_title_1"><h1>{{fileName}}</h1></article>
-                <div id="xs_content_border">
-                    {{{content}}}
-                </div>
-                <div>
-                    转载请保留<a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{fileNum}}.html">原文链接</a>.
-                </div>
-            </div>
         </div>
     </div>
 </div>
-
-<footer class="text-center navbar-fixed-bottom">
-    <div class="visible-xs-block">
-        <div class="bg-primary text-center" onclick="window.open('../index.html','_self')" style="cursor: pointer">
-            目录
-        </div>
-    </div>
-    {{#if next}}
-        <a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html">下一篇: {{next}}</a>
-    {{/if}}
-</footer>
 
 <script src="http://localhost/js/jquery-3.2.1.min.js"></script>
 <script src="http://localhost/js/vendor/modernizr-custom.js"></script>
