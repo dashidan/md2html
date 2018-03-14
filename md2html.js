@@ -114,7 +114,11 @@ console.log("allFileName: " + allFileName);
 
 readFolder(article_path_sub_folder);
 
-convertSiteMap();
+if (convertType == "mip" || convertType == "amp") {
+    /** mip amp 不生成sitemap*/
+} else {
+    convertSiteMap();
+}
 
 /**
  * 读取目录中的MD文件
@@ -172,8 +176,8 @@ function convertFile(mdFile, outHtmlFile, fileName) {
         let article_config = {};
         article_config.title = fileShowName;
         article_config.content = htmlData;
-        article_config.last = getFileByNum(article_type, num - 1);
-        article_config.next = getFileByNum(article_type, num + 1);
+        article_config.last = getFileShowNameByNum(num - 1);
+        article_config.next = getFileShowNameByNum(num + 1);
         article_config.nextNum = num + 1;
         article_config.article_type = article_type;
         article_config.sub_folder = article_path_sub_folder;
@@ -185,20 +189,22 @@ function convertFile(mdFile, outHtmlFile, fileName) {
         let mustache_data;
         if (convertType == "mip") {
             /** mip读取template_article_mip.hbs*/
-            mustache_data = fs.readFileSync("template_article_mip.hbs", 'utf-8');
+            mustache_data = fs.readFileSync("template_mip_article.hbs", 'utf-8');
             article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
             article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
+            article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+
         } else if (convertType == "amp") {
             /** amp*/
-            mustache_data = fs.readFileSync("template_article_amp.hbs", 'utf-8');
+            mustache_data = fs.readFileSync("template_amp_article.hbs", 'utf-8');
             article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
             article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
+            article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss') + "+08:00";
         } else {
             /** 默认pc文件 读取template_article.hbs*/
             mustache_data = fs.readFileSync("template_article.hbs", 'utf-8');
         }
         /** 格式化时间*/
-        article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
         /** 指定目录全部文件名*/
         article_config.all_file_name = allFileName;
         /** 转化为html数据*/
@@ -228,20 +234,21 @@ function convertIndex(outHtmlFile, descFile) {
     let mustache_data;
     if (convertType == "mip") {
         /** mip读取template_article_mip.hbs*/
-        mustache_data = fs.readFileSync("template_index_mip.hbs", 'utf-8');
+        mustache_data = fs.readFileSync("template_mip_index.hbs", 'utf-8');
         article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
         article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
+        article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
     } else if (convertType == "amp") {
         /** amp*/
-        mustache_data = fs.readFileSync("template_index_amp.hbs", 'utf-8');
+        mustache_data = fs.readFileSync("template_amp_index.hbs", 'utf-8');
         article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
         article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
+        article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss') + "+08:00";
     } else {
         /** 读取template_article.hbs*/
         mustache_data = fs.readFileSync("template_index.hbs", 'utf-8');
     }
     /** 格式化时间*/
-    article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
     /** 指定目录全部文件名*/
     article_config.all_file_name = allFileName;
     /** 转化为html数据*/
@@ -262,7 +269,6 @@ function convertSiteMap() {
     console.log("convertSiteMap outSiteMapFile " + outSiteMapFile);
     console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     let article_config = {};
-    // article_config.description = descFile;
     article_config.article_type = article_type;
     article_config.sub_folder = article_path_sub_folder;
     /** 读取handlebars模板数据*/
@@ -286,11 +292,13 @@ function convertSiteMap() {
  * @param num
  * @return {*}
  */
-function getFileByNum(article_type, num) {
+function getFileShowNameByNum(num) {
     for (let index in allFileName) {
-        if (allFileName[index]["sub_folder"] == article_type) {
+        if (allFileName[index]["sub_folder"] == article_path_sub_folder) {
             if (num >= 1 && num < allFileName[index]["article"].length) {
-                return removeFileNumberAndSuffix(allFileName[index]["article"][num]["md"]);
+                let arr = allFileName[index]["article"][num]["md"].split("/");
+                let fileName = arr[arr.length - 1];
+                return removeFileNumberAndSuffix(fileName);
             }
         }
     }

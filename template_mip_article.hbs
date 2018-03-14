@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html mip>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://c.mipcdn.com/static/v1/mip.css">
+    <link rel="canonical" href="https://dashidan.com/article/{{article_type}}/{{sub_folder}}/{{fileNum}}.html">
+    <title>{{description.title}}</title>
+    <meta name="description" content="{{description.desc}}">
+    <style mip-custom>
+        {{{css_bootstrap}}}
+        {{{css_dashidan}}}
+    </style>
+
+    <noscript>
+        <style mip-officialrelease>
+            body {
+                -webkit-animation: none;
+                -moz-animation: none;
+                -ms-animation: none;
+                animation: none;
+            }
+        </style>
+    </noscript>
+
+    <script  type="application/ld+json"> {
+       "@context": "https://zhanzhang.baidu.com/contexts/cambrian.jsonld",
+       "@id": "https://mip.dashidan.com/article/{{article_type}}/{{sub_folder}}/{{fileNum}}.html",
+       "title":"{{description.title}}",
+       "description": "{{description.desc}}",
+       "pubDate": "{{date_published}}",
+       "isOriginal": "1"
+}</script>
+
+    <script src="https://c.mipcdn.com/extensions/platform/v1/mip-cambrian/mip-cambrian.js"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="http://mip.localhost/index.html">大屎蛋教程网</a>
+    </div>
+</nav>
+
+<mip-cambrian site-id="1588397041009826"></mip-cambrian>
+
+<div class="container-fluid">
+    <!-- 顶部面包屑导航-->
+    <div class="text-left">
+        <a href="http://mip.localhost/index.html">首页</a> > <a
+            href="http://mip.localhost/article/{{article_type}}/index.html">{{article_type}}</a> > {{fileName}}
+    </div>
+
+    <div class="dsd_content">
+        <!-- 文章内容-->
+        <div class="dsd_title"><h1>{{fileName}}</h1></div>
+        <div id="xs_content_border">
+            {{{content}}}
+        </div>
+    </div>
+</div>
+
+<footer class="text-center navbar-fixed-bottom navbar-default">
+    {{#if next}}
+        <div class="text-center">
+            <a class="navbar-brand"
+               href="http://mip.localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html">下一篇: {{next}}</a>
+        </div>
+    {{/if}}
+    <div class="text-center">
+        <a class="navbar-brand" href="http://mip.localhost/index.html">目录</a>
+    </div>
+</footer>
+
+<!--百度统计组件，外链mip-stats-baidu.js -->
+<mip-stats-baidu token="6632e058970afc4f6d1475330c7682cd"></mip-stats-baidu>
+<!--mip 运行环境-->
+<script src="https://c.mipcdn.com/static/v1/mip.js"></script>
+<!--分享组件 代码-->
+<script src="https://c.mipcdn.com/static/v1/mip-share/mip-share.js"></script>
+<!--百度统计组件 代码-->
+<script src="https://c.mipcdn.com/static/v1/mip-stats-baidu/mip-stats-baidu.js"></script>
+</body>
+</html>

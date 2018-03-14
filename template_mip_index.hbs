@@ -7,7 +7,6 @@
     <link rel="canonical" href="https://dashidan.com/article/{{article_type}}/{{sub_folder}}/{{fileNum}}.html">
     <title>{{description.title}}</title>
     <meta name="description" content="{{description.desc}}">
-
     <style mip-custom>
         {{{css_bootstrap}}}
         {{{css_dashidan}}}
@@ -42,36 +41,29 @@
         <a class="navbar-brand" href="http://mip.localhost/index.html">大屎蛋教程网</a>
     </div>
 </nav>
-
-<mip-cambrian site-id="1588397041009826"></mip-cambrian>
-
 <div class="container-fluid">
-    <!-- 顶部面包屑导航-->
-    <div class="text-left">
+    <div>
         <a href="http://mip.localhost/index.html">首页</a> > <a
-            href="http://mip.localhost/article/{{article_type}}/index.html">{{article_type}}</a> > {{fileName}}
+            href="http://mip.localhost/article/{{article_type}}/index.html">{{article_type}}</a>
     </div>
 
     <div class="dsd_content">
-        <!-- 文章内容-->
-        <div class="dsd_title"><h1>{{fileName}}</h1></div>
-        <div id="xs_content_border">
-            {{{content}}}
+        <div id="xs_index" class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            {{#each all_file_name}}
+                <div class="dsd_title">
+                    <span id="{{this.sub_folder}}_title">- {{this.category}}</span>
+                </div>
+                <div id="{{this.sub_folder}}" class="dsd_catalog_left_show">
+                    {{#each this.article}}
+                        <div class="single_line">
+                            <a href="http://mip.localhost/article/{{../../article_type}}/{{../this.sub_folder}}/{{this.fileNum}}.html">{{this.fileName}}</a>
+                        </div>
+                    {{/each}}
+                </div>
+            {{/each}}
         </div>
     </div>
 </div>
-
-<footer class="text-center navbar-fixed-bottom navbar-default">
-    {{#if next}}
-        <div class="text-center">
-            <a class="navbar-brand"
-               href="http://mip.localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html">下一篇: {{next}}</a>
-        </div>
-    {{/if}}
-    <div class="text-center">
-        <a class="navbar-brand" href="http://mip.localhost/index.html">目录</a>
-    </div>
-</footer>
 
 <!--百度统计组件，外链mip-stats-baidu.js -->
 <mip-stats-baidu token="6632e058970afc4f6d1475330c7682cd"></mip-stats-baidu>
