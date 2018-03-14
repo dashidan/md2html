@@ -114,6 +114,8 @@ console.log("allFileName: " + allFileName);
 
 readFolder(article_path_sub_folder);
 
+convertSiteMap();
+
 /**
  * 读取目录中的MD文件
  * @param folderName
@@ -204,7 +206,7 @@ function convertFile(mdFile, outHtmlFile, fileName) {
         let firstHtmlData = compiled(article_config);
         /** 写入文件*/
         fs.writeFileSync(outHtmlFile, firstHtmlData);
-        console.log("OK.");
+        console.log("convertFile OK.");
     } else {
         console.warn("忽略没有加序号的文件 mdFile: " + mdFile);
     }
@@ -247,7 +249,36 @@ function convertIndex(outHtmlFile, descFile) {
     let firstHtmlData = compiled(article_config);
     /** 写入文件*/
     fs.writeFileSync(outHtmlFile, firstHtmlData);
-    console.log("OK.");
+    console.log("convertIndex OK.");
+}
+
+/**
+ * 转化sitemap,只对pc管用, amp, mip 不管用
+ */
+function convertSiteMap() {
+    /** 只转化文章索引*/
+    let outSiteMapFile = htmlOutBaseFolder + article_type + "/sitemap.xml";
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    console.log("convertSiteMap outSiteMapFile " + outSiteMapFile);
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    let article_config = {};
+    // article_config.description = descFile;
+    article_config.article_type = article_type;
+    article_config.sub_folder = article_path_sub_folder;
+    /** 读取handlebars模板数据*/
+    let mustache_data;
+    /** 读取template_article.hbs*/
+    mustache_data = fs.readFileSync("template_sitemap.hbs", 'utf-8');
+    /** 格式化时间*/
+    article_config.date_published = moment(new Date()).format('YYYY-MM-DD');
+    /** 指定目录全部文件名*/
+    article_config.all_file_name = allFileName;
+    /** 转化为html数据*/
+    const compiled = Handlebars.compile(mustache_data);
+    let firstHtmlData = compiled(article_config);
+    /** 写入文件*/
+    fs.writeFileSync(outSiteMapFile, firstHtmlData);
+    console.log("convertSiteMap OK.");
 }
 
 /**
