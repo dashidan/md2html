@@ -1,0 +1,60 @@
+<!doctype html>
+<html amp>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <link rel="canonical" href="https://dashidan.com/article/{{article_type}}/{{sub_folder}}/{{fileNum}}.html">
+    <title>{{description.title}}</title>
+    <meta name="description" content="{{description.desc}}">
+    <style amp-custom>
+            {{{css_bootstrap}}}
+            {{{css_dashidan}}}
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "headline": "{{description.title}}",
+      "datePublished": "{{date_published}}",
+      "author": "大屎蛋教程网",
+      "image": "https://dashidan.com/img/dsd_google.png",
+      "publisher": "大屎蛋教程网",
+      "dataModified": "{{date_published}}"
+    }
+    </script>
+    <script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script>
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="http://amp.localhost/index.html">大屎蛋教程网</a>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div>
+        <a href="http://amp.localhost/index.html">首页</a> > <a
+            href="http://amp.localhost/article/{{article_type}}/index.html">{{article_type}}</a>
+    </div>
+
+    <div class="dsd_content">
+        <div id="xs_index" class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            {{#each all_file_name}}
+                <div class="dsd_title">
+                    <span id="{{this.sub_folder}}_title">- {{this.category}}</span>
+                </div>
+                <div id="{{this.sub_folder}}" class="dsd_catalog_left_show">
+                    {{#each this.article}}
+                        <div class="single_line">
+                            <a href="http://amp.localhost/article/{{../../article_type}}/{{../this.sub_folder}}/{{this.fileNum}}.html">{{this.fileName}}</a>
+                        </div>
+                    {{/each}}
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+</body>
+</html>
