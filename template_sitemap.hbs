@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://dashidan.com/article/{{article_type}}/index.html</loc>
+        <lastmod>{{date_published}}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1</priority>
+    </url>
+    {{#each all_file_name}}
+        {{#each this.article}}
+    <url>
+        <loc>https://dashidan.com/article/{{../../article_type}}/{{../this.sub_folder}}/{{this.fileNum}}.html</loc>
+        <lastmod>{{../../date_published}}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+        {{/each}}
+    {{/each}}
+</urlset>
