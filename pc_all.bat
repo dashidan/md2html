@@ -9,8 +9,6 @@ start pc_redis
 start pc_webserver
 start pc_windows
 
-
-
 start amp_git
 start amp_html
 start amp_java
@@ -21,7 +19,6 @@ start amp_php
 start amp_redis
 start amp_webserver
 start amp_windows
-
 
 start mip_git
 start mip_html
