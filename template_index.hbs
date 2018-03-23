@@ -53,30 +53,49 @@
         </ul>
     </div>
 </nav>
+
 <div class="fullscreen">
     <div class="container-fluid">
         <div>
             <a href="http://localhost/index.html">首页</a> > <a
                 href="http://localhost/article/{{article_type}}/index.html">{{article_type}}</a>
         </div>
-
-        <div class="dsd_content">
-            <div id="xs_index" class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
-                {{#each all_file_name}}
-                    <!-- 循环1-->
-                    <div class="dsd_title" onclick="clickTitle('{{this.sub_folder}}')">
-                        <span id="{{this.sub_folder}}_title">- {{this.category}}</span>
-                    </div>
-                    <div id="{{this.sub_folder}}" class="dsd_catalog_left_show">
-                        <!-- 循环2-->
-                        {{#each this.article}}
-                            <div class="single_line">
-                                <a href="http://localhost/article/{{../../article_type}}/{{../this.sub_folder}}/{{this.fileNum}}.html">{{this.fileName}}</a>
+        <div id="xs_index" class="hidden-xs hidden-sm col-md-2 col-lg-2">
+            {{#each all_file_name}}
+                <div class="dsd_title">
+                    <a href="#{{this.sub_folder}}_title">{{this.category}}</a>
+                </div>
+            {{/each}}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            {{#each all_file_name}}
+                <div>
+                    <span id="{{this.sub_folder}}_title"><h3>{{this.category}}</h3></span>
+                </div>
+                <hr>
+                <div id="{{this.sub_folder}}">
+                    {{#each this.article}}
+                        <div style="margin-top: 3px;">
+                            <div style="font-size: 16px; margin-top: 10px; margin-left: 5px">
+                                <a href="http://localhost/article/{{../../article_type}}/{{../this.sub_folder}}/{{this.fileNum}}.html"><span
+                                        class="dsd_index_title">{{this.fileName}}</span></a>
                             </div>
-                        {{/each}}
-                    </div>
-                {{/each}}
-            </div>
+                            <div class="jumbotron" style="font-size: 14px; margin-top: 10px; margin-left: 10px;">
+                                {{this.description.desc}}
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            {{/each}}
+        </div>
+
+        <div class="hidden-xs hidden-sm col-md-2 col-lg-2">
+            <div><span style="color: darkgray">广告赞助</span></div>
+            <script type="text/javascript">
+                /*160*600 创建于 2018/3/23*/
+                var cpro_id = "u3395011";
+            </script>
+            <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js"></script>
         </div>
     </div>
 </div>

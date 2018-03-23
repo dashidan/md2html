@@ -55,10 +55,9 @@
 </nav>
 <div class="fullscreen">
     <div class="container-fluid">
-        <!-- 顶部面包屑导航-->
         <div>
             <a href="http://localhost/index.html">首页</a> > <a
-                href="http://localhost/article/{{article_type}}/index.html">{{article_type}}</a> > {{fileName}}
+                href="http://localhost/article/{{article_type}}/index.html">{{article_type}}</a> > {{sub_folder}} > {{fileName}}
         </div>
 
         <div class="dsd_content">
@@ -98,15 +97,32 @@
     </div>
 </div>
 
-<footer class="text-center navbar-fixed-bottom">
-    <div class="visible-xs-block visible-sm-block">
-        <div class="bg-primary text-center" onclick="window.open('../index.html','_self')" style="cursor: pointer">
-            目录
-        </div>
+<hr>
+
+<footer>
+    <!--<div class="visible-xs-block visible-sm-block">-->
+    <!--<div class="bg-primary text-center" onclick="window.open('../index.html','_self')" style="cursor: pointer">-->
+    <!--目录-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
+        {{#if last}}
+            <a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{lastNum}}.html"> &lt; {{last}}</a>
+        {{/if}}
     </div>
-    {{#if next}}
-        <a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html">下一篇: {{next}}</a>
-    {{/if}}
+    <!--<div class="visible-xs-block visible-sm-block">-->
+    <!--<div class="bg-primary text-center" onclick="window.open('../index.html','_self')" style="cursor: pointer">-->
+    <!--目录-->
+    <!--</div>-->
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+        <a href="http://localhost/article/{{article_type}}/index.html">目录</a>
+    </div>
+    <!--</div>-->
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
+        {{#if next}}
+            <a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html"> {{next}} &gt;</a>
+        {{/if}}
+    </div>
 </footer>
 
 <script src="http://localhost/js/jquery-3.2.1.min.js"></script>
