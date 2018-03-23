@@ -62,7 +62,7 @@
         </div>
 
         <div class="dsd_content">
-            <div id="xs_index" class="col-sm-3 col-md-3 col-lg-3 col-xs-12 hidden-xs">
+            <div id="xs_index" class="hidden-xs hidden-sm col-md-2 col-lg-2">
                 {{#each all_file_name}}
                     <div class="dsd_title" onclick="clickTitle('{{this.sub_folder}}')">
                         <span id="{{this.sub_folder}}_title">+ {{this.category}}</span>
@@ -76,8 +76,7 @@
                     </div>
                 {{/each}}
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9">
-                <!-- 文章内容-->
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                 <article class="dsd_title_1"><h1>{{fileName}}</h1></article>
                 <div id="xs_content_border">
                     {{{content}}}
@@ -86,12 +85,21 @@
                     转载请保留<a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{fileNum}}.html">原文链接</a>.
                 </div>
             </div>
+
+            <div class="hidden-xs hidden-sm col-md-2 col-lg-2">
+                <div><span style="color: darkgray">广告赞助</span></div>
+                <script type="text/javascript">
+                    /*160*600 创建于 2018/3/23*/
+                    var cpro_id = "u3395011";
+                </script>
+                <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js"></script>
+            </div>
         </div>
     </div>
 </div>
 
 <footer class="text-center navbar-fixed-bottom">
-    <div class="visible-xs-block">
+    <div class="visible-xs-block visible-sm-block">
         <div class="bg-primary text-center" onclick="window.open('../index.html','_self')" style="cursor: pointer">
             目录
         </div>
