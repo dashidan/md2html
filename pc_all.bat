@@ -8,3 +8,4 @@ start pc_php
 start pc_redis
 start pc_webserver
 start pc_windows
+start pc_python_doc27
