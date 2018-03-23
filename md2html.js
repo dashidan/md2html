@@ -17,7 +17,7 @@ let convertType = "pc";
 if (process.argv.length > 4) {
     /** 转化类型 可选[mip, amp]*/
     convertType = process.argv[4];
-    if (convertType != "mip" && convertType != "amp") {
+    if (convertType != "mip" && convertType != "amp" && convertType != "m") {
         console.log('error 参数错误 convertType:' + convertType);
         return;
     }
@@ -30,6 +30,8 @@ if (convertType == "mip") {
     htmlOutBaseFolder = "D:/workplace/git/mip.dsd/article/";
 } else if (convertType == "amp") {
     htmlOutBaseFolder = "D:/workplace/git/amp.dsd/article/";
+} else if (convertType == "m") {
+    htmlOutBaseFolder = "D:/workplace/git/m.dsd/article/";
 } else {
     /** pc默认格式文件目录*/
     htmlOutBaseFolder = "D:/workplace/git/Doc/dashidan.com/article/";
@@ -117,7 +119,7 @@ console.log("allFileName: " + allFileName);
 
 readFolder(article_path_sub_folder);
 
-if (convertType == "mip" || convertType == "amp") {
+if (convertType == "mip" || convertType == "amp" || convertType == "m") {
     /** mip amp 不生成sitemap*/
 } else {
     convertSiteMap();
@@ -153,6 +155,10 @@ function readFolder() {
     }
 
     let outHtmlFile = htmlOutBaseFolder + article_type + "/index.html";
+    let exist = fs.existsSync(htmlOutBaseFolder + article_type);
+    if (!exist) {
+        fs.mkdirSync(htmlOutBaseFolder + article_type);
+    }
     let descFile = require(article_folder + "/desc.json");
     convertIndex(outHtmlFile, descFile);
 }
@@ -172,12 +178,8 @@ function convertFile(mdFile, outHtmlFile, fileName) {
     console.log("convertFile " + mdFile + " to: " + outHtmlFile);
     console.log("-------------------------------------------------------");
     const num = parseInt(fileName.split('.')[0]);
-    // /** 输出文件名去掉"1.", 只用"."后边的文件名, 这样调整顺序时, 不影响文章的索引*/
-    // const fileShowName = getFileShowName(fileName);
-    // if (fileShowName) {
     /** 配置表中加入其它参数*/
     let article_config = {};
-    // article_config.title = fileShowName;
     article_config.content = htmlData;
     article_config.last = getFileShowNameByNum(num - 1);
     article_config.next = getFileShowNameByNum(num + 1);
@@ -203,9 +205,12 @@ function convertFile(mdFile, outHtmlFile, fileName) {
         article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
         article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
         article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss') + "+08:00";
+    } else if (convertType == "m") {
+        /** m*/
+        mustache_data = fs.readFileSync("template_m_article.hbs", 'utf-8');
     } else {
         /** 默认pc文件 读取template_article.hbs*/
-        mustache_data = fs.readFileSync("template_article.hbs", 'utf-8');
+        mustache_data = fs.readFileSync("template_pc_article.hbs", 'utf-8');
     }
     /** 格式化时间*/
     /** 指定目录全部文件名*/
@@ -216,10 +221,6 @@ function convertFile(mdFile, outHtmlFile, fileName) {
     /** 写入文件*/
     fs.writeFileSync(outHtmlFile, firstHtmlData);
     console.log("convertFile OK.");
-    // }
-    // else {
-    //     console.warn("忽略没有加序号的文件 mdFile: " + mdFile);
-    // }
 }
 
 /**
@@ -248,9 +249,11 @@ function convertIndex(outHtmlFile, descFile) {
         article_config.css_bootstrap = fs.readFileSync(css_bootstrap, 'utf-8');
         article_config.css_dashidan = fs.readFileSync(css_dashidan, 'utf-8');
         article_config.date_published = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss') + "+08:00";
+    } else if (convertType == "m") {
+        mustache_data = fs.readFileSync("template_m_index.hbs", 'utf-8');
     } else {
         /** 读取template_article.hbs*/
-        mustache_data = fs.readFileSync("template_index.hbs", 'utf-8');
+        mustache_data = fs.readFileSync("template_pc_index.hbs", 'utf-8');
     }
     /** 格式化时间*/
     /** 指定目录全部文件名*/

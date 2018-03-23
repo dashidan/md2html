@@ -1,0 +1,110 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{{description.title}}</title>
+    <meta name="description" content="{{description.desc}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+
+    <link rel="stylesheet" href="http://localhost/css/bootstrap.css">
+    <link rel="stylesheet" href="http://localhost/css/dashidan.css">
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6632e058970afc4f6d1475330c7682cd";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="http://m.localhost/index.html">大屎蛋教程网</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://m.localhost/index.html">首页</a></li>
+            <li><a href="http://m.localhost/about.html">关于</a></li>
+            <li><a href="http://m.localhost/thanks.html">鸣谢</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div>
+        <script type="text/javascript">
+            /*20:5 创建于 2018/3/24*/
+            var cpro_id = "u3395670";
+        </script>
+        <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js"></script>
+
+        <a href="http://m.localhost/index.html">首页</a> > <a
+            href="http://m.localhost/article/{{article_type}}/index.html">{{article_type}}</a> > {{sub_folder}}
+        > {{fileName}}
+    </div>
+
+    <div class="single_line">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
+            {{#if last}}
+                <a href="http://m.localhost/article/{{article_type}}/{{sub_folder}}/{{lastNum}}.html"> &lt; 上一篇</a>
+            {{/if}}
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+            <a href="http://m.localhost/article/{{article_type}}/index.html">目录</a>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
+            {{#if next}}
+                <a href="http://m.localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html"> 下一篇 &gt;</a>
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="dsd_content">
+        <div class="col-12">
+            <article class="dsd_title_1"><h1>{{fileName}}</h1></article>
+            <div id="xs_content_border">
+                {{{content}}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<footer class="single_line">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
+        {{#if last}}
+            <a href="http://m.localhost/article/{{article_type}}/{{sub_folder}}/{{lastNum}}.html"> &lt; 上一篇</a>
+        {{/if}}
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+        <a href="http://m.localhost/article/{{article_type}}/index.html">目录</a>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
+        {{#if next}}
+            <a href="http://m.localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html"> 下一篇 &gt;</a>
+        {{/if}}
+    </div>
+</footer>
+
+<script src="http://m.localhost/js/jquery-3.2.1.min.js"></script>
+<script src="http://m.localhost/js/vendor/modernizr-custom.js"></script>
+<script src="http://m.localhost/js/bootstrap.js"></script>
+<script src="http://m.localhost/js/google-code-prettify/run_prettify.js"></script>
+<script src="http://m.localhost/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+start m_git
+start m_html
+start m_java
+start m_linux
+start m_mongodb
+start m_nodejs
+start m_php
+start m_redis
+start m_webserver
+start m_windows
+start m_python_doc27

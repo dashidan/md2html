@@ -16,14 +16,6 @@
     <link rel="stylesheet" href="http://localhost/css/bootstrap.css">
     <link rel="stylesheet" href="http://localhost/css/dashidan.css">
 
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-                                                          google_ad_client: "ca-pub-8924316869528600",
-                                                          enable_page_level_ads: true
-                                                      });
-    </script>
-
     <script>
         var _hmt = _hmt || [];
         (function () {
@@ -100,24 +92,14 @@
 <hr>
 
 <footer>
-    <!--<div class="visible-xs-block visible-sm-block">-->
-    <!--<div class="bg-primary text-center" onclick="window.open('../index.html','_self')" style="cursor: pointer">-->
-    <!--目录-->
-    <!--</div>-->
-    <!--</div>-->
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
         {{#if last}}
             <a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{lastNum}}.html"> &lt; {{last}}</a>
         {{/if}}
     </div>
-    <!--<div class="visible-xs-block visible-sm-block">-->
-    <!--<div class="bg-primary text-center" onclick="window.open('../index.html','_self')" style="cursor: pointer">-->
-    <!--目录-->
-    <!--</div>-->
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
         <a href="http://localhost/article/{{article_type}}/index.html">目录</a>
     </div>
-    <!--</div>-->
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
         {{#if next}}
             <a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html"> {{next}} &gt;</a>

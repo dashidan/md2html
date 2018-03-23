@@ -47,15 +47,21 @@
     </div>
 </div>
 
-<footer class="text-center navbar-fixed-bottom navbar-default">
-    {{#if next}}
-        <div class="text-center">
-            <a class="navbar-brand"
-               href="http://amp.localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html">下一篇: {{next}}</a>
-        </div>
-    {{/if}}
-    <div class="text-center">
-        <a class="navbar-brand" href="http://amp.localhost/index.html">目录</a>
+<hr>
+
+<footer>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
+        {{#if last}}
+            <a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{lastNum}}.html"> &lt; {{last}}</a>
+        {{/if}}
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+        <a href="http://localhost/article/{{article_type}}/index.html">目录</a>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
+        {{#if next}}
+            <a href="http://localhost/article/{{article_type}}/{{sub_folder}}/{{nextNum}}.html"> {{next}} &gt;</a>
+        {{/if}}
     </div>
 </footer>
 
