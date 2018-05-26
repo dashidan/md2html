@@ -4,3 +4,4 @@ node md2html.js java idea
 node md2html.js java jdk8
 node md2html.js java api
 node md2html.js java faq
+node md2html.js java profile
